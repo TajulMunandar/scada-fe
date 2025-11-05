@@ -82,7 +82,7 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("overview");
 
   useEffect(() => {
-    const socket: Socket = io("http://scada.tirtapase.id:5000", {
+    const socket: Socket = io("https://scada.tirtapase.id:5000", {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 2000,
