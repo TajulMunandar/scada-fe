@@ -83,7 +83,7 @@ const App: React.FC = () => {
 
   // ==================== SOCKET.IO CONNECTION ====================
   useEffect(() => {
-    const socket: Socket = io("http://localhost:5000");
+    const socket: Socket = io("https://scada-back-end.vercel.app/");
 
     socket.on("connect", () => {
       console.log("✅ Connected to Socket.IO server");
