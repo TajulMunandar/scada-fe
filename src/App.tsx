@@ -97,7 +97,7 @@ const App: React.FC = () => {
 
     socket.on("mqtt_message", (data) => {
       const now = Date.now();
-      if (now - lastUpdate >= 10000) {
+      if (now - lastUpdate >= 100000) {
         // 10000 ms = 10 detik
         console.log("📨 Received MQTT data:", data);
         setData(data);
