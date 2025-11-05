@@ -88,14 +88,21 @@ const App: React.FC = () => {
       reconnectionDelay: 2000,
     });
 
+    let lastUpdate = 0;
+
     socket.on("connect", () => {
       console.log("✅ Connected to Socket.IO server");
       setIsConnected(true);
     });
 
     socket.on("mqtt_message", (data) => {
-      console.log("📨 Received MQTT data:", data);
-      setData(data);
+      const now = Date.now();
+      if (now - lastUpdate >= 10000) {
+        // 10000 ms = 10 detik
+        console.log("📨 Received MQTT data:", data);
+        setData(data);
+        lastUpdate = now;
+      }
     });
 
     socket.on("disconnect", () => {
