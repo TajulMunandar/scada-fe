@@ -81,18 +81,21 @@ const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<TabType>("overview");
 
-  // ==================== SOCKET.IO CONNECTION ====================
   useEffect(() => {
-    const socket: Socket = io("https://scada-back-end.vercel.app/");
+    const socket: Socket = io("https://scada-back-end.vercel.app/", {
+      reconnection: true,
+      reconnectionAttempts: 10,
+      reconnectionDelay: 2000,
+    });
 
     socket.on("connect", () => {
       console.log("✅ Connected to Socket.IO server");
       setIsConnected(true);
     });
 
-    socket.on("mqtt_message", (receivedData) => {
-      console.log("📨 Received MQTT data via Socket.IO:", receivedData);
-      setData(receivedData);
+    socket.on("mqtt_message", (data) => {
+      console.log("📨 Received MQTT data:", data);
+      setData(data);
     });
 
     socket.on("disconnect", () => {
@@ -102,7 +105,7 @@ const App: React.FC = () => {
 
     return () => {
       socket.disconnect();
-      console.log("👋 Disconnected from Socket.IO server");
+      console.log("👋 Socket disconnected");
     };
   }, []);
 
