@@ -82,13 +82,11 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("overview");
 
   useEffect(() => {
-    const socket: Socket = io("https://scada.tirtapase.id:5000", {
+    const socket: Socket = io("http://72.61.114.209:5000", {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 2000,
     });
-
-    let lastUpdate = 0;
 
     socket.on("connect", () => {
       console.log("✅ Connected to Socket.IO server");
@@ -96,13 +94,8 @@ const App: React.FC = () => {
     });
 
     socket.on("mqtt_message", (data) => {
-      const now = Date.now();
-      if (now - lastUpdate >= 100000) {
-        // 10000 ms = 10 detik
-        console.log("📨 Received MQTT data:", data);
-        setData(data);
-        lastUpdate = now;
-      }
+      console.log("📨 Received MQTT data:", data);
+      setData(data); // langsung update setiap pesan masuk
     });
 
     socket.on("disconnect", () => {
